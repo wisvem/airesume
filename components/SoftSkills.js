@@ -1,20 +1,27 @@
 import React, { useState } from 'react';
 
-const SoftSkills = () => {
-  const [skills, setSkills] = useState([]);
+const SoftSkills = ({ setResumeData, resumeData }) => {
   const [newSkill, setNewSkill] = useState('');
 
   const addSkill = () => {
     if (newSkill.trim() !== '') {
-      setSkills([...skills, newSkill]);
+      setResumeData((prevData) => ({
+        ...prevData,
+        softSkills: [...prevData.softSkills, newSkill]
+      }));
       setNewSkill('');
     }
   };
 
   const removeSkill = (index) => {
-    const updatedSkills = [...skills];
-    updatedSkills.splice(index, 1);
-    setSkills(updatedSkills);
+    setResumeData((prevData) => {
+      const updatedSkills = [...prevData.softSkills];
+      updatedSkills.splice(index, 1);
+      return {
+        ...prevData,
+        softSkills: updatedSkills
+      };
+    });
   };
 
   const handleSkillChange = (e) => {
@@ -29,7 +36,7 @@ const SoftSkills = () => {
         <button onClick={addSkill}>Add Skill</button>
       </div>
       <ul>
-        {skills.map((skill, index) => (
+        {resumeData.softSkills.map((skill, index) => (
           <li key={index}>
             {skill}
             <button onClick={() => removeSkill(index)}>Remove</button>
