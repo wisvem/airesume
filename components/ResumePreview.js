@@ -7,14 +7,14 @@ const ResumePreview = ({ resumeData }) => {
     <div>
       <h2>Resume Preview</h2>
       <h3>Basic Info</h3>
-      <p>First Name: {basicInfo?.firstName}</p>
-      <p>Last Name: {basicInfo?.lastName}</p>
-      <p>Headline: {basicInfo?.headline}</p>
-      <p>Address: {basicInfo?.address}</p>
-      <p>Phone: {basicInfo?.phone}</p>
-      <p>Email: {basicInfo?.email}</p>
-      <p>Location: {basicInfo?.location}</p>
-      <p>Summary: {basicInfo?.summary}</p>
+      <p>First Name: {basicInfo.firstName}</p>
+      <p>Last Name: {basicInfo.lastName}</p>
+      <p>Headline: {basicInfo.headline}</p>
+      <p>Address: {basicInfo.address}</p>
+      <p>Phone: {basicInfo.phone}</p>
+      <p>Email: {basicInfo.email}</p>
+      <p>Location: {basicInfo.location}</p>
+      <p>Summary: {basicInfo.summary}</p>
 
       <h3>Soft Skills</h3>
       <ul>
@@ -30,7 +30,6 @@ const ResumePreview = ({ resumeData }) => {
         ))}
       </ul>
 
-
       <h3>Work Experience</h3>
       {experiences.map((experience, index) => (
         <div key={index}>
@@ -42,7 +41,6 @@ const ResumePreview = ({ resumeData }) => {
           <hr />
         </div>
       ))}
-
     </div>
   );
 };
