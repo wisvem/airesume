@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-const WorkExperience = ({ setResumeData, resumeData }) => {
-  const [newExperience, setNewExperience] = useState({
-    company: '',
-    position: '',
+const Education = ({ setResumeData, resumeData }) => {
+  const [newEducation, setNewEducation] = useState({
+    school: '',
+    degree: '',
     description: '',
     startDate: '',
     endDate: '',
@@ -13,13 +13,13 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === 'checkbox') {
-      setNewExperience((prevExperience) => ({
-        ...prevExperience,
+      setNewEducation((prevEducation) => ({
+        ...prevEducation,
         [name]: checked
       }));
     } else {
-      setNewExperience((prevExperience) => ({
-        ...prevExperience,
+      setNewEducation((prevEducation) => ({
+        ...prevEducation,
         [name]: value
       }));
     }
@@ -27,28 +27,28 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
 
   const handleInputChangeEdit = (e, index) => {
     const { name, value, type, checked } = e.target;
-    const updatedExperiences = [...resumeData.experiences];
+    const updatedEducations = [...resumeData.educations];
     if (type === 'checkbox') {
-      updatedExperiences[index][name] = checked;
+      updatedEducations[index][name] = checked;
     } else {
-      updatedExperiences[index][name] = value;
+      updatedEducations[index][name] = value;
     }
     setResumeData((prevResumeData) => ({
       ...prevResumeData,
-      experiences: updatedExperiences
+      educations: updatedEducations
     }));
   };
 
-  const handleAddExperience = () => {
-    if (newExperience.company.trim() !== '' && newExperience.position.trim() !== '') {
-      const updatedExperiences = [...resumeData.experiences, newExperience];
+  const handleAddEducation = () => {
+    if (newEducation.school.trim() !== '' && newEducation.degree.trim() !== '') {
+      const updatedEducations = [...resumeData.educations, newEducation];
       setResumeData((prevResumeData) => ({
         ...prevResumeData,
-        experiences: updatedExperiences
+        educations: updatedEducations
       }));
-      setNewExperience({
-        company: '',
-        position: '',
+      setNewEducation({
+        school: '',
+        degree: '',
         description: '',
         startDate: '',
         endDate: '',
@@ -57,62 +57,62 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
     }
   };
 
-  const handleRemoveExperience = (index) => {
-    const updatedExperiences = [...resumeData.experiences];
-    updatedExperiences.splice(index, 1);
+  const handleRemoveEducation = (index) => {
+    const updatedEducations = [...resumeData.educations];
+    updatedEducations.splice(index, 1);
     setResumeData((prevResumeData) => ({
       ...prevResumeData,
-      experiences: updatedExperiences
+      educations: updatedEducations
     }));
   };
 
   const handleMoveUp = (index) => {
     if (index > 0) {
-      const updatedExperiences = [...resumeData.experiences];
-      [updatedExperiences[index], updatedExperiences[index - 1]] = [updatedExperiences[index - 1], updatedExperiences[index]];
+      const updatedEducations = [...resumeData.educations];
+      [updatedEducations[index], updatedEducations[index - 1]] = [updatedEducations[index - 1], updatedEducations[index]];
       setResumeData((prevResumeData) => ({
         ...prevResumeData,
-        experiences: updatedExperiences
+        educations: updatedEducations
       }));
     }
   };
 
   const handleMoveDown = (index) => {
-    if (index < resumeData.experiences.length - 1) {
-      const updatedExperiences = [...resumeData.experiences];
-      [updatedExperiences[index], updatedExperiences[index + 1]] = [updatedExperiences[index + 1], updatedExperiences[index]];
+    if (index < resumeData.educations.length - 1) {
+      const updatedEducations = [...resumeData.educations];
+      [updatedEducations[index], updatedEducations[index + 1]] = [updatedEducations[index + 1], updatedEducations[index]];
       setResumeData((prevResumeData) => ({
         ...prevResumeData,
-        experiences: updatedExperiences
+        educations: updatedEducations
       }));
     }
   };
 
   return (
     <div>
-      <h2>Work Experience</h2>
+      <h2>Education</h2>
 
       <form onSubmit={(e) => e.preventDefault()}>
-        <label htmlFor="company">Company:</label>
-        <input type="text" id="company" name="company" value={newExperience.company} onChange={handleInputChange} />
+        <label htmlFor="school">School:</label>
+        <input type="text" id="school" name="school" value={newEducation.school} onChange={handleInputChange} />
 
-        <label htmlFor="position">Position:</label>
-        <input type="text" id="position" name="position" value={newExperience.position} onChange={handleInputChange} />
+        <label htmlFor="degree">Degree:</label>
+        <input type="text" id="degree" name="degree" value={newEducation.degree} onChange={handleInputChange} />
 
         <label htmlFor="description">Description:</label>
-        <textarea id="description" name="description" value={newExperience.description} onChange={handleInputChange}></textarea>
+        <textarea id="description" name="description" value={newEducation.description} onChange={handleInputChange}></textarea>
 
         <label htmlFor="startDate">Start Date:</label>
-        <input type="month" id="startDate" name="startDate" value={newExperience.startDate} onChange={handleInputChange} />
+        <input type="month" id="startDate" name="startDate" value={newEducation.startDate} onChange={handleInputChange} />
 
         <label htmlFor="endDate">End Date:</label>
         <input
           type="month"
           id="endDate"
           name="endDate"
-          value={newExperience.endDate}
+          value={newEducation.endDate}
           onChange={handleInputChange}
-          disabled={newExperience.ongoing}
+          disabled={newEducation.ongoing}
         />
 
         <label htmlFor="ongoing">Ongoing:</label>
@@ -120,32 +120,32 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
           type="checkbox"
           id="ongoing"
           name="ongoing"
-          checked={newExperience.ongoing}
+          checked={newEducation.ongoing}
           onChange={handleInputChange}
         />
 
-        <button onClick={handleAddExperience}>Add Experience</button>
+        <button onClick={handleAddEducation}>Add Education</button>
       </form>
 
-      {/* <h3>Experiences:</h3> */}
-      {resumeData.experiences.map((experience, index) => (
+      {/* <h3>Education:</h3> */}
+      {resumeData.educations.map((education, index) => (
         <div key={index}>
           <form onSubmit={(e) => e.preventDefault()}>
-            <label htmlFor={`company-${index}`}>Company:</label>
+            <label htmlFor={`school-${index}`}>School:</label>
             <input
               type="text"
-              id={`company-${index}`}
-              name="company"
-              value={experience.company}
+              id={`school-${index}`}
+              name="school"
+              value={education.school}
               onChange={(e) => handleInputChangeEdit(e, index)}
             />
 
-            <label htmlFor={`position-${index}`}>Position:</label>
+            <label htmlFor={`degree-${index}`}>Degree:</label>
             <input
               type="text"
-              id={`position-${index}`}
-              name="position"
-              value={experience.position}
+              id={`degree-${index}`}
+              name="degree"
+              value={education.degree}
               onChange={(e) => handleInputChangeEdit(e, index)}
             />
 
@@ -153,7 +153,7 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
             <textarea
               id={`description-${index}`}
               name="description"
-              value={experience.description}
+              value={education.description}
               onChange={(e) => handleInputChangeEdit(e, index)}
             ></textarea>
 
@@ -162,7 +162,7 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
               type="month"
               id={`startDate-${index}`}
               name="startDate"
-              value={experience.startDate}
+              value={education.startDate}
               onChange={(e) => handleInputChangeEdit(e, index)}
             />
 
@@ -171,9 +171,9 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
               type="month"
               id={`endDate-${index}`}
               name="endDate"
-              value={experience.endDate}
+              value={education.endDate}
               onChange={(e) => handleInputChangeEdit(e, index)}
-              disabled={experience.ongoing}
+              disabled={education.ongoing}
             />
 
             <label htmlFor={`ongoing-${index}`}>Ongoing:</label>
@@ -181,11 +181,11 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
               type="checkbox"
               id={`ongoing-${index}`}
               name="ongoing"
-              checked={experience.ongoing}
+              checked={education.ongoing}
               onChange={(e) => handleInputChangeEdit(e, index)}
             />
 
-            <button onClick={() => handleRemoveExperience(index)}>Remove</button>
+            <button onClick={() => handleRemoveEducation(index)}>Remove</button>
             <button onClick={() => handleMoveUp(index)}>Move Up</button>
             <button onClick={() => handleMoveDown(index)}>Move Down</button>
           </form>
@@ -195,4 +195,4 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
   );
 };
 
-export default WorkExperience;
+export default Education;

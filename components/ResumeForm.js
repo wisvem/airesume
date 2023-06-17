@@ -3,6 +3,7 @@ import BasicInfo from './BasicInfo';
 import SoftSkills from './SoftSkills';
 import HardSkills from './HardSkills';
 import WorkExperience from './WorkExperience';
+import Education from './Education';
 import ResumePreview from './ResumePreview';
 
 const ResumeForm = () => {
@@ -11,6 +12,7 @@ const ResumeForm = () => {
     softSkills: [],
     hardSkills: [],
     experiences: [],
+    educations: [],
   });
 
   return (
@@ -20,6 +22,7 @@ const ResumeForm = () => {
       <SoftSkills setResumeData={setResumeData} resumeData={resumeData} />
       <HardSkills setResumeData={setResumeData} resumeData={resumeData} />
       <WorkExperience setResumeData={setResumeData} resumeData={resumeData} />
+      <Education setResumeData={setResumeData} resumeData={resumeData} />
       <ResumePreview resumeData={resumeData} />
     </div>
   );
