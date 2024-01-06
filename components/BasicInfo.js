@@ -182,7 +182,7 @@ const BasicInfo = ({ setResumeData, resumeData }) => {
         onChange={handleLocationChange}
       /> */}
 
-      <label htmlFor="linkedin">linkedin:</label>
+      <label htmlFor="linkedin">linkedin username:</label>
       <input
         type="text"
         id="linkedin"
@@ -190,7 +190,7 @@ const BasicInfo = ({ setResumeData, resumeData }) => {
         onChange={handleLinkedinChange}
       />
 
-      <label htmlFor="github">Github:</label>
+      <label htmlFor="github">Github username:</label>
       <input
         type="text"
         id="github"

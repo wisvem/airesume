@@ -6,7 +6,7 @@ import {
   faLocation,
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
-import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { faLinkedin, faGithub } from "@fortawesome/free-brands-svg-icons";
 
 const ResumePreview = ({ resumeData }) => {
   const { basicInfo, softSkills, hardSkills, experiences, educations } =
@@ -27,9 +27,8 @@ const ResumePreview = ({ resumeData }) => {
               <h3>Work Experience</h3>
               {experiences.map((experience, index) => (
                 <div key={index}>
-                  {experience.company && <p>Company: {experience.company}</p>}
-                  {experience.position && (
-                    <p>Position: {experience.position}</p>
+                  {experience.position && experience.company && (
+                    <p>{experience.position}, {experience.company}</p>
                   )}
                   {experience.description && (
                     <p>Description: {experience.description}</p>
@@ -67,37 +66,65 @@ const ResumePreview = ({ resumeData }) => {
           )}
         </div>
         <div className="right-side">
-          <p>
-            <FontAwesomeIcon icon={faLocation} />: {basicInfo.address}
-          </p>
-          <p>
-            <FontAwesomeIcon icon={faPhone} />: {basicInfo.phone}
-          </p>
-          <p>
-            <FontAwesomeIcon icon={faEnvelope} />: {basicInfo.email}
-          </p>
-          <p>
-            <FontAwesomeIcon icon={faLinkedin} />: {basicInfo.linkedin}
-          </p>
-
+          {basicInfo.location && (
+            <p>
+              <FontAwesomeIcon icon={faLocation} />: {basicInfo.address}
+            </p>
+          )}
+          {basicInfo.phone && (
+            <p>
+              <FontAwesomeIcon icon={faPhone} />:{" "}
+              <a href={`tel:${basicInfo.phone}`}>{basicInfo.phone}</a>
+            </p>
+          )}
+          {basicInfo.email && (
+            <p>
+              <FontAwesomeIcon icon={faEnvelope} />:{" "}
+              <a href={`mailto:${basicInfo.email}`}>{basicInfo.email}</a>
+            </p>
+          )}
+          {basicInfo.linkedin && (
+            <p>
+              <FontAwesomeIcon icon={faLinkedin} />:{" "}
+              <a
+                href={`https://linkedin.com/in/${basicInfo.linkedin}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {basicInfo.linkedin}
+              </a>
+            </p>
+          )}
+          {basicInfo.github && (
+            <p>
+              <FontAwesomeIcon icon={faGithub} />:{" "}
+              <a
+                href={`https://github.com/${basicInfo.github}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {basicInfo.github}
+              </a>
+            </p>
+          )}
           {softSkills.length > 0 && (
-            <div>
+            <div className="skill-container">
               <h3>Soft Skills</h3>
-              <ul>
-                {softSkills.map((skill, index) => (
-                  <li key={index}>{skill}</li>
-                ))}
-              </ul>
+              {softSkills.map((skill, index) => (
+                <div className="skill-item" key={index}>
+                  {skill}
+                </div>
+              ))}
             </div>
           )}
           {hardSkills.length > 0 && (
-            <div>
+            <div className="skill-container">
               <h3>Hard Skills</h3>
-              <ul>
-                {hardSkills.map((skill, index) => (
-                  <li key={index}>{skill}</li>
-                ))}
-              </ul>
+              {hardSkills.map((skill, index) => (
+                <div className="skill-item" key={index}>
+                  {skill}
+                </div>
+              ))}
             </div>
           )}
         </div>

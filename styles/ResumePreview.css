@@ -28,9 +28,25 @@
 }
 
 .left-side {
-    width: 70%;
+  width: 70%;
 }
+
 .right-side {
   width: 25%;
   font-size: 0.9em;
+}
+
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skill-item {
+  display: inline-block;
+  border: 1px solid #fdfdfd;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  margin: 2px; 
 }
