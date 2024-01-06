@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const BasicInfo = ({ setResumeData, resumeData }) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [headline, setHeadline] = useState('');
-  const [address, setAddress] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [location, setLocation] = useState('');
-  const [summary, setSummary] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [headline, setHeadline] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [location, setLocation] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [github, setGithub] = useState("");
+  const [summary, setSummary] = useState("");
 
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
@@ -16,8 +18,8 @@ const BasicInfo = ({ setResumeData, resumeData }) => {
       ...prevData,
       basicInfo: {
         ...prevData.basicInfo,
-        firstName: e.target.value
-      }
+        firstName: e.target.value,
+      },
     }));
   };
 
@@ -27,8 +29,8 @@ const BasicInfo = ({ setResumeData, resumeData }) => {
       ...prevData,
       basicInfo: {
         ...prevData.basicInfo,
-        lastName: e.target.value
-      }
+        lastName: e.target.value,
+      },
     }));
   };
 
@@ -38,8 +40,8 @@ const BasicInfo = ({ setResumeData, resumeData }) => {
       ...prevData,
       basicInfo: {
         ...prevData.basicInfo,
-        headline: e.target.value
-      }
+        headline: e.target.value,
+      },
     }));
   };
 
@@ -49,8 +51,8 @@ const BasicInfo = ({ setResumeData, resumeData }) => {
       ...prevData,
       basicInfo: {
         ...prevData.basicInfo,
-        address: e.target.value
-      }
+        address: e.target.value,
+      },
     }));
   };
 
@@ -60,8 +62,8 @@ const BasicInfo = ({ setResumeData, resumeData }) => {
       ...prevData,
       basicInfo: {
         ...prevData.basicInfo,
-        phone: e.target.value
-      }
+        phone: e.target.value,
+      },
     }));
   };
 
@@ -71,8 +73,8 @@ const BasicInfo = ({ setResumeData, resumeData }) => {
       ...prevData,
       basicInfo: {
         ...prevData.basicInfo,
-        email: e.target.value
-      }
+        email: e.target.value,
+      },
     }));
   };
 
@@ -82,8 +84,30 @@ const BasicInfo = ({ setResumeData, resumeData }) => {
       ...prevData,
       basicInfo: {
         ...prevData.basicInfo,
-        location: e.target.value
-      }
+        location: e.target.value,
+      },
+    }));
+  };
+
+  const handleLinkedinChange = (e) => {
+    setLinkedin(e.target.value);
+    setResumeData((prevData) => ({
+      ...prevData,
+      basicInfo: {
+        ...prevData.basicInfo,
+        linkedin: e.target.value,
+      },
+    }));
+  };
+
+  const handleGithubChange = (e) => {
+    setGithub(e.target.value);
+    setResumeData((prevData) => ({
+      ...prevData,
+      basicInfo: {
+        ...prevData.basicInfo,
+        github: e.target.value,
+      },
     }));
   };
 
@@ -93,8 +117,8 @@ const BasicInfo = ({ setResumeData, resumeData }) => {
       ...prevData,
       basicInfo: {
         ...prevData.basicInfo,
-        summary: e.target.value
-      }
+        summary: e.target.value,
+      },
     }));
   };
 
@@ -103,28 +127,83 @@ const BasicInfo = ({ setResumeData, resumeData }) => {
       <h2>Basic Information</h2>
 
       <label htmlFor="firstName">First Name:</label>
-      <input type="text" id="firstName" value={firstName} onChange={handleFirstNameChange} />
+      <input
+        type="text"
+        id="firstName"
+        value={firstName}
+        onChange={handleFirstNameChange}
+      />
 
       <label htmlFor="lastName">Last Name:</label>
-      <input type="text" id="lastName" value={lastName} onChange={handleLastNameChange} />
+      <input
+        type="text"
+        id="lastName"
+        value={lastName}
+        onChange={handleLastNameChange}
+      />
 
       <label htmlFor="headline">Headline:</label>
-      <input type="text" id="headline" value={headline} onChange={handleHeadlineChange} />
+      <input
+        type="text"
+        id="headline"
+        value={headline}
+        onChange={handleHeadlineChange}
+      />
 
       <label htmlFor="address">Address:</label>
-      <input type="text" id="address" value={address} onChange={handleAddressChange} />
+      <input
+        type="text"
+        id="address"
+        value={address}
+        onChange={handleAddressChange}
+      />
 
       <label htmlFor="phone">Phone:</label>
-      <input type="text" id="phone" value={phone} onChange={handlePhoneChange} />
+      <input
+        type="text"
+        id="phone"
+        value={phone}
+        onChange={handlePhoneChange}
+      />
 
       <label htmlFor="email">Email:</label>
-      <input type="text" id="email" value={email} onChange={handleEmailChange} />
+      <input
+        type="text"
+        id="email"
+        value={email}
+        onChange={handleEmailChange}
+      />
 
-      <label htmlFor="location">Location:</label>
-      <input type="text" id="location" value={location} onChange={handleLocationChange} />
+      {/* <label htmlFor="location">Location:</label>
+      <input
+        type="text"
+        id="location"
+        value={location}
+        onChange={handleLocationChange}
+      /> */}
+
+      <label htmlFor="linkedin">linkedin:</label>
+      <input
+        type="text"
+        id="linkedin"
+        value={linkedin}
+        onChange={handleLinkedinChange}
+      />
+
+      <label htmlFor="github">Github:</label>
+      <input
+        type="text"
+        id="github"
+        value={github}
+        onChange={handleGithubChange}
+      />
 
       <label htmlFor="summary">Summary:</label>
-      <textarea id="summary" value={summary} onChange={handleSummaryChange}></textarea>
+      <textarea
+        id="summary"
+        value={summary}
+        onChange={handleSummaryChange}
+      ></textarea>
     </div>
   );
 };

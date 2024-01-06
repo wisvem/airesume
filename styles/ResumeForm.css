@@ -1,0 +1,11 @@
+/* styles/ResumeForm.css */
+
+.resume-form {
+    display: flex;
+    justify-content: space-between;
+}
+
+.resume-form .input-components,
+.resume-form .preview {
+    width: 45%; /* Adjust this value as needed */
+}

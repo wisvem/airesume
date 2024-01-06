@@ -1,0 +1,36 @@
+/* styles/ResumePreview.css */
+.name {
+  margin-bottom: 0;
+  font-size: 2.5em;
+  text-align: center;
+}
+
+.center {
+  text-align: center;
+}
+
+.headline {
+  text-align: center;
+  font-size: 1.2em;
+  margin: 0;
+  padding: 0;
+}
+
+.summary {
+  font-size: 1em;
+  margin-top: 1em;
+  text-align: justify;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-side {
+    width: 70%;
+}
+.right-side {
+  width: 25%;
+  font-size: 0.9em;
+}
