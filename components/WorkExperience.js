@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const WorkExperience = ({ setResumeData, resumeData }) => {
   const [newExperience, setNewExperience] = useState({
-    company: '',
-    position: '',
-    description: '',
-    startDate: '',
-    endDate: '',
-    ongoing: false
+    company: "",
+    location: "",
+    position: "",
+    description: "",
+    startDate: "",
+    endDate: "",
+    ongoing: false,
   });
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    if (type === 'checkbox') {
+    if (type === "checkbox") {
       setNewExperience((prevExperience) => ({
         ...prevExperience,
-        [name]: checked
+        [name]: checked,
       }));
     } else {
       setNewExperience((prevExperience) => ({
         ...prevExperience,
-        [name]: value
+        [name]: value,
       }));
     }
   };
@@ -28,31 +29,35 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
   const handleInputChangeEdit = (e, index) => {
     const { name, value, type, checked } = e.target;
     const updatedExperiences = [...resumeData.experiences];
-    if (type === 'checkbox') {
+    if (type === "checkbox") {
       updatedExperiences[index][name] = checked;
     } else {
       updatedExperiences[index][name] = value;
     }
     setResumeData((prevResumeData) => ({
       ...prevResumeData,
-      experiences: updatedExperiences
+      experiences: updatedExperiences,
     }));
   };
 
   const handleAddExperience = () => {
-    if (newExperience.company.trim() !== '' && newExperience.position.trim() !== '') {
+    if (
+      newExperience.company.trim() !== "" &&
+      newExperience.position.trim() !== ""
+    ) {
       const updatedExperiences = [...resumeData.experiences, newExperience];
       setResumeData((prevResumeData) => ({
         ...prevResumeData,
-        experiences: updatedExperiences
+        experiences: updatedExperiences,
       }));
       setNewExperience({
-        company: '',
-        position: '',
-        description: '',
-        startDate: '',
-        endDate: '',
-        ongoing: false
+        company: "",
+        location: "",
+        position: "",
+        description: "",
+        startDate: "",
+        endDate: "",
+        ongoing: false,
       });
     }
   };
@@ -62,17 +67,20 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
     updatedExperiences.splice(index, 1);
     setResumeData((prevResumeData) => ({
       ...prevResumeData,
-      experiences: updatedExperiences
+      experiences: updatedExperiences,
     }));
   };
 
   const handleMoveUp = (index) => {
     if (index > 0) {
       const updatedExperiences = [...resumeData.experiences];
-      [updatedExperiences[index], updatedExperiences[index - 1]] = [updatedExperiences[index - 1], updatedExperiences[index]];
+      [updatedExperiences[index], updatedExperiences[index - 1]] = [
+        updatedExperiences[index - 1],
+        updatedExperiences[index],
+      ];
       setResumeData((prevResumeData) => ({
         ...prevResumeData,
-        experiences: updatedExperiences
+        experiences: updatedExperiences,
       }));
     }
   };
@@ -80,10 +88,13 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
   const handleMoveDown = (index) => {
     if (index < resumeData.experiences.length - 1) {
       const updatedExperiences = [...resumeData.experiences];
-      [updatedExperiences[index], updatedExperiences[index + 1]] = [updatedExperiences[index + 1], updatedExperiences[index]];
+      [updatedExperiences[index], updatedExperiences[index + 1]] = [
+        updatedExperiences[index + 1],
+        updatedExperiences[index],
+      ];
       setResumeData((prevResumeData) => ({
         ...prevResumeData,
-        experiences: updatedExperiences
+        experiences: updatedExperiences,
       }));
     }
   };
@@ -94,16 +105,48 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
 
       <form onSubmit={(e) => e.preventDefault()}>
         <label htmlFor="company">Company:</label>
-        <input type="text" id="company" name="company" value={newExperience.company} onChange={handleInputChange} />
+        <input
+          type="text"
+          id="company"
+          name="company"
+          value={newExperience.company}
+          onChange={handleInputChange}
+        />
+
+        <label htmlFor="location">Location:</label>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          value={newExperience.location}
+          onChange={handleInputChange}
+        />
 
         <label htmlFor="position">Position:</label>
-        <input type="text" id="position" name="position" value={newExperience.position} onChange={handleInputChange} />
+        <input
+          type="text"
+          id="position"
+          name="position"
+          value={newExperience.position}
+          onChange={handleInputChange}
+        />
 
         <label htmlFor="description">Description:</label>
-        <textarea id="description" name="description" value={newExperience.description} onChange={handleInputChange}></textarea>
+        <textarea
+          id="description"
+          name="description"
+          value={newExperience.description}
+          onChange={handleInputChange}
+        ></textarea>
 
         <label htmlFor="startDate">Start Date:</label>
-        <input type="month" id="startDate" name="startDate" value={newExperience.startDate} onChange={handleInputChange} />
+        <input
+          type="month"
+          id="startDate"
+          name="startDate"
+          value={newExperience.startDate}
+          onChange={handleInputChange}
+        />
 
         <label htmlFor="endDate">End Date:</label>
         <input
@@ -127,7 +170,6 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
         <button onClick={handleAddExperience}>Add Experience</button>
       </form>
 
-      {/* <h3>Experiences:</h3> */}
       {resumeData.experiences.map((experience, index) => (
         <div key={index}>
           <form onSubmit={(e) => e.preventDefault()}>
@@ -137,6 +179,15 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
               id={`company-${index}`}
               name="company"
               value={experience.company}
+              onChange={(e) => handleInputChangeEdit(e, index)}
+            />
+
+            <label htmlFor={`location-${index}`}>Location:</label>
+            <input
+              type="text"
+              id={`location-${index}`}
+              name="location"
+              value={experience.location}
               onChange={(e) => handleInputChangeEdit(e, index)}
             />
 
@@ -185,7 +236,9 @@ const WorkExperience = ({ setResumeData, resumeData }) => {
               onChange={(e) => handleInputChangeEdit(e, index)}
             />
 
-            <button onClick={() => handleRemoveExperience(index)}>Remove</button>
+            <button onClick={() => handleRemoveExperience(index)}>
+              Remove
+            </button>
             <button onClick={() => handleMoveUp(index)}>Move Up</button>
             <button onClick={() => handleMoveDown(index)}>Move Down</button>
           </form>

@@ -48,5 +48,19 @@
   padding: 10px;
   box-sizing: border-box;
   border-radius: 5px;
-  margin: 2px; 
+  margin: 2px;
+}
+
+.position {
+  margin: 0;
+  font-weight: bold;
+}
+
+.date {
+  margin: 0;
+  font-size: 0.8em;
+}
+
+.description {
+  text-align: justify;
 }

@@ -7,6 +7,7 @@ import {
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin, faGithub } from "@fortawesome/free-brands-svg-icons";
+import { formatDateRange } from "../utils/dateFormatter";
 
 const ResumePreview = ({ resumeData }) => {
   const { basicInfo, softSkills, hardSkills, experiences, educations } =
@@ -28,16 +29,22 @@ const ResumePreview = ({ resumeData }) => {
               {experiences.map((experience, index) => (
                 <div key={index}>
                   {experience.position && experience.company && (
-                    <p>{experience.position}, {experience.company}</p>
+                    <p className="position">
+                      {experience.position}, {experience.company}
+                    </p>
                   )}
+                  <p className="date">
+                    {experience.location}
+                    {", "}
+                    {formatDateRange(
+                      experience.startDate,
+                      experience.endDate,
+                      experience.ongoing
+                    )}
+                  </p>
                   {experience.description && (
-                    <p>Description: {experience.description}</p>
+                    <p className="description">{experience.description}</p>
                   )}
-                  {experience.startDate && (
-                    <p>Start Date: {experience.startDate}</p>
-                  )}
-                  {experience.endDate && <p>End Date: {experience.endDate}</p>}
-                  {experience.ongoing && <p>Ongoing{experience.ongoing}</p>}
                   <hr />
                 </div>
               ))}
