@@ -1,27 +1,21 @@
 import React, { useState } from 'react';
+import useResumeStore from '../stores/useResumeStore';
 
-const HardSkills = ({ setResumeData, resumeData }) => {
+const HardSkills = () => {
   const [newSkill, setNewSkill] = useState('');
+  const { resumeData, setHardSkills } = useResumeStore();
 
   const addSkill = () => {
     if (newSkill.trim() !== '') {
-      setResumeData((prevData) => ({
-        ...prevData,
-        hardSkills: [...prevData.hardSkills, newSkill]
-      }));
+      setHardSkills([...resumeData.hardSkills, newSkill]);
       setNewSkill('');
     }
   };
 
   const removeSkill = (index) => {
-    setResumeData((prevData) => {
-      const updatedSkills = [...prevData.hardSkills];
-      updatedSkills.splice(index, 1);
-      return {
-        ...prevData,
-        hardSkills: updatedSkills
-      };
-    });
+    const updatedSkills = [...resumeData.hardSkills];
+    updatedSkills.splice(index, 1);
+    setHardSkills(updatedSkills);
   };
 
   const handleSkillChange = (e) => {

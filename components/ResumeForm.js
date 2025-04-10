@@ -5,29 +5,52 @@ import HardSkills from "./HardSkills";
 import WorkExperience from "./WorkExperience";
 import Education from "./Education";
 import ResumePreview from "./ResumePreview";
+import useResumeStore from "../stores/useResumeStore";
 import "../styles/ResumeForm.css";
 
 const ResumeForm = () => {
-  const [resumeData, setResumeData] = useState({
-    basicInfo: {},
-    softSkills: [],
-    hardSkills: [],
-    experiences: [],
-    educations: [],
-  });
+  const { resetToInitialData } = useResumeStore();
+  const [activeSection, setActiveSection] = useState('basicInfo');
+
+  const sections = [
+    { id: 'basicInfo', label: 'Información Básica' },
+    { id: 'workExperience', label: 'Experiencia Laboral' },
+    { id: 'education', label: 'Educación' },
+    { id: 'hardSkills', label: 'Habilidades Técnicas' },
+    { id: 'softSkills', label: 'Habilidades Blandas' }
+  ];
 
   return (
     <div className="resume-form">
+      <div className="sidebar">
+        <nav className="sidebar-nav">
+          {sections.map(section => (
+            <button
+              key={section.id}
+              className={activeSection === section.id ? 'active' : ''}
+              onClick={() => setActiveSection(section.id)}
+            >
+              {section.label}
+            </button>
+          ))}
+        </nav>
+      </div>
+
       <div className="input-components">
-        <h1>Airesume</h1>
-        <BasicInfo setResumeData={setResumeData} resumeData={resumeData} />
-        <SoftSkills setResumeData={setResumeData} resumeData={resumeData} />
-        <HardSkills setResumeData={setResumeData} resumeData={resumeData} />
-        <WorkExperience setResumeData={setResumeData} resumeData={resumeData} />
-        <Education setResumeData={setResumeData} resumeData={resumeData} />
+        <div className="header">
+          <h1>Airesume</h1>
+          <button onClick={resetToInitialData} className="reset-button">
+            Reset to Sample Data
+          </button>
+        </div>
+        {activeSection === 'basicInfo' && <BasicInfo />}
+        {activeSection === 'workExperience' && <WorkExperience />}
+        {activeSection === 'education' && <Education />}
+        {activeSection === 'hardSkills' && <HardSkills />}
+        {activeSection === 'softSkills' && <SoftSkills />}
       </div>
       <div className="preview">
-        <ResumePreview resumeData={resumeData} />
+        <ResumePreview />
       </div>
     </div>
   );

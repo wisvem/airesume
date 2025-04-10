@@ -1,125 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
+import useResumeStore from "../stores/useResumeStore";
 
-const BasicInfo = ({ setResumeData, resumeData }) => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [headline, setHeadline] = useState("");
-  const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [location, setLocation] = useState("");
-  const [linkedin, setLinkedin] = useState("");
-  const [github, setGithub] = useState("");
-  const [summary, setSummary] = useState("");
+const BasicInfo = () => {
+  const { resumeData, setBasicInfo } = useResumeStore();
 
-  const handleFirstNameChange = (e) => {
-    setFirstName(e.target.value);
-    setResumeData((prevData) => ({
-      ...prevData,
-      basicInfo: {
-        ...prevData.basicInfo,
-        firstName: e.target.value,
-      },
-    }));
-  };
-
-  const handleLastNameChange = (e) => {
-    setLastName(e.target.value);
-    setResumeData((prevData) => ({
-      ...prevData,
-      basicInfo: {
-        ...prevData.basicInfo,
-        lastName: e.target.value,
-      },
-    }));
-  };
-
-  const handleHeadlineChange = (e) => {
-    setHeadline(e.target.value);
-    setResumeData((prevData) => ({
-      ...prevData,
-      basicInfo: {
-        ...prevData.basicInfo,
-        headline: e.target.value,
-      },
-    }));
-  };
-
-  const handleAddressChange = (e) => {
-    setAddress(e.target.value);
-    setResumeData((prevData) => ({
-      ...prevData,
-      basicInfo: {
-        ...prevData.basicInfo,
-        address: e.target.value,
-      },
-    }));
-  };
-
-  const handlePhoneChange = (e) => {
-    setPhone(e.target.value);
-    setResumeData((prevData) => ({
-      ...prevData,
-      basicInfo: {
-        ...prevData.basicInfo,
-        phone: e.target.value,
-      },
-    }));
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    setResumeData((prevData) => ({
-      ...prevData,
-      basicInfo: {
-        ...prevData.basicInfo,
-        email: e.target.value,
-      },
-    }));
-  };
-
-  const handleLocationChange = (e) => {
-    setLocation(e.target.value);
-    setResumeData((prevData) => ({
-      ...prevData,
-      basicInfo: {
-        ...prevData.basicInfo,
-        location: e.target.value,
-      },
-    }));
-  };
-
-  const handleLinkedinChange = (e) => {
-    setLinkedin(e.target.value);
-    setResumeData((prevData) => ({
-      ...prevData,
-      basicInfo: {
-        ...prevData.basicInfo,
-        linkedin: e.target.value,
-      },
-    }));
-  };
-
-  const handleGithubChange = (e) => {
-    setGithub(e.target.value);
-    setResumeData((prevData) => ({
-      ...prevData,
-      basicInfo: {
-        ...prevData.basicInfo,
-        github: e.target.value,
-      },
-    }));
-  };
-
-  const handleSummaryChange = (e) => {
-    setSummary(e.target.value);
-    setResumeData((prevData) => ({
-      ...prevData,
-      basicInfo: {
-        ...prevData.basicInfo,
-        summary: e.target.value,
-      },
-    }));
+  const handleInputChange = (field, value) => {
+    setBasicInfo({ [field]: value });
   };
 
   return (
@@ -130,79 +16,71 @@ const BasicInfo = ({ setResumeData, resumeData }) => {
       <input
         type="text"
         id="firstName"
-        value={firstName}
-        onChange={handleFirstNameChange}
+        value={resumeData.basicInfo.firstName}
+        onChange={(e) => handleInputChange('firstName', e.target.value)}
       />
 
       <label htmlFor="lastName">Last Name:</label>
       <input
         type="text"
         id="lastName"
-        value={lastName}
-        onChange={handleLastNameChange}
+        value={resumeData.basicInfo.lastName}
+        onChange={(e) => handleInputChange('lastName', e.target.value)}
       />
 
       <label htmlFor="headline">Headline:</label>
       <input
         type="text"
         id="headline"
-        value={headline}
-        onChange={handleHeadlineChange}
+        value={resumeData.basicInfo.headline}
+        onChange={(e) => handleInputChange('headline', e.target.value)}
       />
 
       <label htmlFor="address">Address:</label>
       <input
         type="text"
         id="address"
-        value={address}
-        onChange={handleAddressChange}
+        value={resumeData.basicInfo.address}
+        onChange={(e) => handleInputChange('address', e.target.value)}
       />
 
       <label htmlFor="phone">Phone:</label>
       <input
         type="text"
         id="phone"
-        value={phone}
-        onChange={handlePhoneChange}
+        value={resumeData.basicInfo.phone}
+        onChange={(e) => handleInputChange('phone', e.target.value)}
       />
 
       <label htmlFor="email">Email:</label>
       <input
         type="text"
         id="email"
-        value={email}
-        onChange={handleEmailChange}
+        value={resumeData.basicInfo.email}
+        onChange={(e) => handleInputChange('email', e.target.value)}
       />
 
-      {/* <label htmlFor="location">Location:</label>
-      <input
-        type="text"
-        id="location"
-        value={location}
-        onChange={handleLocationChange}
-      /> */}
-
-      <label htmlFor="linkedin">linkedin username:</label>
+      <label htmlFor="linkedin">LinkedIn username:</label>
       <input
         type="text"
         id="linkedin"
-        value={linkedin}
-        onChange={handleLinkedinChange}
+        value={resumeData.basicInfo.linkedin}
+        onChange={(e) => handleInputChange('linkedin', e.target.value)}
       />
 
       <label htmlFor="github">Github username:</label>
       <input
         type="text"
         id="github"
-        value={github}
-        onChange={handleGithubChange}
+        value={resumeData.basicInfo.github}
+        onChange={(e) => handleInputChange('github', e.target.value)}
       />
 
       <label htmlFor="summary">Summary:</label>
       <textarea
         id="summary"
-        value={summary}
-        onChange={handleSummaryChange}
+        value={resumeData.basicInfo.summary}
+        onChange={(e) => handleInputChange('summary', e.target.value)}
       ></textarea>
     </div>
   );

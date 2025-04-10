@@ -8,10 +8,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin, faGithub } from "@fortawesome/free-brands-svg-icons";
 import { formatDateRange } from "../utils/dateFormatter";
+import useResumeStore from "../stores/useResumeStore";
 
-const ResumePreview = ({ resumeData }) => {
-  const { basicInfo, softSkills, hardSkills, experiences, educations } =
-    resumeData;
+const ResumePreview = () => {
+  const { resumeData } = useResumeStore();
+  const { basicInfo, softSkills, hardSkills, workExperience, education } = resumeData;
 
   return (
     <div className="resume-preview">
@@ -23,10 +24,10 @@ const ResumePreview = ({ resumeData }) => {
       <p className="summary">{basicInfo.summary}</p>
       <div className="container">
         <div className="left-side">
-          {experiences.length > 0 && (
+          {workExperience.length > 0 && (
             <div>
               <h3>Work Experience</h3>
-              {experiences.map((experience, index) => (
+              {workExperience.map((experience, index) => (
                 <div key={index}>
                   {experience.position && experience.company && (
                     <p className="position">
@@ -51,21 +52,21 @@ const ResumePreview = ({ resumeData }) => {
             </div>
           )}
 
-          {educations.length > 0 && (
+          {education.length > 0 && (
             <div>
               <h3>Education</h3>
-              {educations.map((education, index) => (
+              {education.map((edu, index) => (
                 <div key={index}>
-                  {education.school && <p>School: {education.school}</p>}
-                  {education.degree && <p>Degree: {education.degree}</p>}
-                  {education.description && (
-                    <p>Description: {education.description}</p>
+                  {edu.school && <p>School: {edu.school}</p>}
+                  {edu.degree && <p>Degree: {edu.degree}</p>}
+                  {edu.description && (
+                    <p>Description: {edu.description}</p>
                   )}
-                  {education.startDate && (
-                    <p>Start Date: {education.startDate}</p>
+                  {edu.startDate && (
+                    <p>Start Date: {edu.startDate}</p>
                   )}
-                  {education.endDate && <p>End Date: {education.endDate}</p>}
-                  {education.ongoing && <p>Ongoing{education.ongoing}</p>}
+                  {edu.endDate && <p>End Date: {edu.endDate}</p>}
+                  {edu.ongoing && <p>Ongoing{edu.ongoing}</p>}
                   <hr />
                 </div>
               ))}

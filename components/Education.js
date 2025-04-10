@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import useResumeStore from '../stores/useResumeStore';
 
-const Education = ({ setResumeData, resumeData }) => {
+const Education = () => {
   const [newEducation, setNewEducation] = useState({
     school: '',
     degree: '',
@@ -9,6 +10,8 @@ const Education = ({ setResumeData, resumeData }) => {
     endDate: '',
     ongoing: false
   });
+
+  const { resumeData, setEducation } = useResumeStore();
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -27,25 +30,19 @@ const Education = ({ setResumeData, resumeData }) => {
 
   const handleInputChangeEdit = (e, index) => {
     const { name, value, type, checked } = e.target;
-    const updatedEducations = [...resumeData.educations];
+    const updatedEducations = [...resumeData.education];
     if (type === 'checkbox') {
       updatedEducations[index][name] = checked;
     } else {
       updatedEducations[index][name] = value;
     }
-    setResumeData((prevResumeData) => ({
-      ...prevResumeData,
-      educations: updatedEducations
-    }));
+    setEducation(updatedEducations);
   };
 
   const handleAddEducation = () => {
     if (newEducation.school.trim() !== '' && newEducation.degree.trim() !== '') {
-      const updatedEducations = [...resumeData.educations, newEducation];
-      setResumeData((prevResumeData) => ({
-        ...prevResumeData,
-        educations: updatedEducations
-      }));
+      const updatedEducations = [...resumeData.education, newEducation];
+      setEducation(updatedEducations);
       setNewEducation({
         school: '',
         degree: '',
@@ -58,33 +55,24 @@ const Education = ({ setResumeData, resumeData }) => {
   };
 
   const handleRemoveEducation = (index) => {
-    const updatedEducations = [...resumeData.educations];
+    const updatedEducations = [...resumeData.education];
     updatedEducations.splice(index, 1);
-    setResumeData((prevResumeData) => ({
-      ...prevResumeData,
-      educations: updatedEducations
-    }));
+    setEducation(updatedEducations);
   };
 
   const handleMoveUp = (index) => {
     if (index > 0) {
-      const updatedEducations = [...resumeData.educations];
+      const updatedEducations = [...resumeData.education];
       [updatedEducations[index], updatedEducations[index - 1]] = [updatedEducations[index - 1], updatedEducations[index]];
-      setResumeData((prevResumeData) => ({
-        ...prevResumeData,
-        educations: updatedEducations
-      }));
+      setEducation(updatedEducations);
     }
   };
 
   const handleMoveDown = (index) => {
-    if (index < resumeData.educations.length - 1) {
-      const updatedEducations = [...resumeData.educations];
+    if (index < resumeData.education.length - 1) {
+      const updatedEducations = [...resumeData.education];
       [updatedEducations[index], updatedEducations[index + 1]] = [updatedEducations[index + 1], updatedEducations[index]];
-      setResumeData((prevResumeData) => ({
-        ...prevResumeData,
-        educations: updatedEducations
-      }));
+      setEducation(updatedEducations);
     }
   };
 
@@ -128,7 +116,7 @@ const Education = ({ setResumeData, resumeData }) => {
       </form>
 
       {/* <h3>Education:</h3> */}
-      {resumeData.educations.map((education, index) => (
+      {resumeData.education.map((edu, index) => (
         <div key={index}>
           <form onSubmit={(e) => e.preventDefault()}>
             <label htmlFor={`school-${index}`}>School:</label>
@@ -136,7 +124,7 @@ const Education = ({ setResumeData, resumeData }) => {
               type="text"
               id={`school-${index}`}
               name="school"
-              value={education.school}
+              value={edu.school}
               onChange={(e) => handleInputChangeEdit(e, index)}
             />
 
@@ -145,7 +133,7 @@ const Education = ({ setResumeData, resumeData }) => {
               type="text"
               id={`degree-${index}`}
               name="degree"
-              value={education.degree}
+              value={edu.degree}
               onChange={(e) => handleInputChangeEdit(e, index)}
             />
 
@@ -153,7 +141,7 @@ const Education = ({ setResumeData, resumeData }) => {
             <textarea
               id={`description-${index}`}
               name="description"
-              value={education.description}
+              value={edu.description}
               onChange={(e) => handleInputChangeEdit(e, index)}
             ></textarea>
 
@@ -162,7 +150,7 @@ const Education = ({ setResumeData, resumeData }) => {
               type="month"
               id={`startDate-${index}`}
               name="startDate"
-              value={education.startDate}
+              value={edu.startDate}
               onChange={(e) => handleInputChangeEdit(e, index)}
             />
 
@@ -171,9 +159,9 @@ const Education = ({ setResumeData, resumeData }) => {
               type="month"
               id={`endDate-${index}`}
               name="endDate"
-              value={education.endDate}
+              value={edu.endDate}
               onChange={(e) => handleInputChangeEdit(e, index)}
-              disabled={education.ongoing}
+              disabled={edu.ongoing}
             />
 
             <label htmlFor={`ongoing-${index}`}>Ongoing:</label>
@@ -181,7 +169,7 @@ const Education = ({ setResumeData, resumeData }) => {
               type="checkbox"
               id={`ongoing-${index}`}
               name="ongoing"
-              checked={education.ongoing}
+              checked={edu.ongoing}
               onChange={(e) => handleInputChangeEdit(e, index)}
             />
 
