@@ -13,11 +13,11 @@ const ResumeForm = () => {
   const [activeSection, setActiveSection] = useState('basicInfo');
 
   const sections = [
-    { id: 'basicInfo', label: 'Información Básica' },
-    { id: 'workExperience', label: 'Experiencia Laboral' },
-    { id: 'education', label: 'Educación' },
-    { id: 'hardSkills', label: 'Habilidades Técnicas' },
-    { id: 'softSkills', label: 'Habilidades Blandas' }
+    { id: 'basicInfo', label: 'Profile', icon: '👤' },
+    { id: 'workExperience', label: 'Work', icon: '💼' },
+    { id: 'education', label: 'Education', icon: '🎓' },
+    { id: 'hardSkills', label: 'Hard Skills', icon: '⚙️' },
+    { id: 'softSkills', label: 'Soft Skills', icon: '🤝' }
   ];
 
   return (
@@ -30,7 +30,8 @@ const ResumeForm = () => {
               className={activeSection === section.id ? 'active' : ''}
               onClick={() => setActiveSection(section.id)}
             >
-              {section.label}
+              {section.icon}
+              <span>{section.label}</span>
             </button>
           ))}
         </nav>
