@@ -36,7 +36,7 @@ const ResumePreview = () => {
                   )}
                   <p className="date">
                     {experience.location}
-                    {", "}
+                    {" | "}
                     {formatDateRange(
                       experience.startDate,
                       experience.endDate,
@@ -57,16 +57,16 @@ const ResumePreview = () => {
               <h3>Education</h3>
               {education.map((edu, index) => (
                 <div key={index}>
-                  {edu.school && <p>School: {edu.school}</p>}
-                  {edu.degree && <p>Degree: {edu.degree}</p>}
-                  {edu.description && (
-                    <p>Description: {edu.description}</p>
-                  )}
-                  {edu.startDate && (
-                    <p>Start Date: {edu.startDate}</p>
-                  )}
-                  {edu.endDate && <p>End Date: {edu.endDate}</p>}
-                  {edu.ongoing && <p>Ongoing{edu.ongoing}</p>}
+                  {edu.degree && <p className="position">{edu.degree}</p>}
+                  {edu.school && <p >{edu.school}</p>}
+                  <p className="date">
+                    {formatDateRange(
+                      edu.startDate,
+                      edu.endDate,
+                      edu.ongoing
+                    )}
+                  </p>
+                  {edu.description && (<p className="description">{edu.description}</p>)}
                   <hr />
                 </div>
               ))}

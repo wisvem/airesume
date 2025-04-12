@@ -7,17 +7,25 @@ import Education from "./Education";
 import ResumePreview from "./ResumePreview";
 import useResumeStore from "../stores/useResumeStore";
 import "../styles/ResumeForm.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUser,
+  faBriefcase,
+  faGraduationCap,
+  faCogs,
+  faHandshake
+} from "@fortawesome/free-solid-svg-icons";
 
 const ResumeForm = () => {
   const { resetToInitialData } = useResumeStore();
   const [activeSection, setActiveSection] = useState('basicInfo');
 
   const sections = [
-    { id: 'basicInfo', label: 'Profile', icon: '👤' },
-    { id: 'workExperience', label: 'Work', icon: '💼' },
-    { id: 'education', label: 'Education', icon: '🎓' },
-    { id: 'hardSkills', label: 'Hard Skills', icon: '⚙️' },
-    { id: 'softSkills', label: 'Soft Skills', icon: '🤝' }
+    { id: 'basicInfo', label: 'Profile', icon: <FontAwesomeIcon icon={faUser} /> },
+    { id: 'workExperience', label: 'Work', icon: <FontAwesomeIcon icon={faBriefcase} /> },
+    { id: 'education', label: 'Education', icon: <FontAwesomeIcon icon={faGraduationCap} /> },
+    { id: 'hardSkills', label: 'Hard Skills', icon: <FontAwesomeIcon icon={faCogs} /> },
+    { id: 'softSkills', label: 'Soft Skills', icon: <FontAwesomeIcon icon={faHandshake} /> }
   ];
 
   return (

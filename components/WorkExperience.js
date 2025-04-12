@@ -1,62 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import useResumeStore from '../stores/useResumeStore';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faCopy,
+  faArrowUp,
+  faArrowDown,
+  faTrash,
+  faPlus
+} from '@fortawesome/free-solid-svg-icons';
 
 const WorkExperience = () => {
+  const [showNewExperienceForm, setShowNewExperienceForm] = useState(false);
+  const { resumeData, setWorkExperience } = useResumeStore();
+  const lastExperienceRef = useRef(null);
+
   const [newExperience, setNewExperience] = useState({
     company: "",
-    location: "",
     position: "",
-    description: "",
+    location: "",
     startDate: "",
     endDate: "",
+    description: "",
     ongoing: false,
   });
 
-  const { resumeData, setWorkExperience } = useResumeStore();
+  const formatDateForInput = (dateString) => {
+    if (!dateString) return "";
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return "";
+      return date.toISOString().slice(0, 7);
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "";
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    if (type === "checkbox") {
-      setNewExperience((prevExperience) => ({
-        ...prevExperience,
-        [name]: checked,
-      }));
-    } else {
-      setNewExperience((prevExperience) => ({
-        ...prevExperience,
-        [name]: value,
-      }));
-    }
-  };
-
-  const handleInputChangeEdit = (e, index) => {
-    const { name, value, type, checked } = e.target;
-    const updatedExperiences = [...resumeData.workExperience];
-    if (type === "checkbox") {
-      updatedExperiences[index][name] = checked;
-    } else {
-      updatedExperiences[index][name] = value;
-    }
-    setWorkExperience(updatedExperiences);
+    setNewExperience({
+      ...newExperience,
+      [name]: type === "checkbox" ? checked : value,
+    });
   };
 
   const handleAddExperience = () => {
-    if (
-      newExperience.company.trim() !== "" &&
-      newExperience.position.trim() !== ""
-    ) {
-      const updatedExperiences = [...resumeData.workExperience, newExperience];
-      setWorkExperience(updatedExperiences);
-      setNewExperience({
-        company: "",
-        location: "",
-        position: "",
-        description: "",
-        startDate: "",
-        endDate: "",
-        ongoing: false,
-      });
-    }
+    const blankExperience = {
+      company: "",
+      position: "",
+      location: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+      ongoing: false,
+    };
+    
+    const updatedExperiences = [...resumeData.workExperience, blankExperience];
+    setWorkExperience(updatedExperiences);
+    setNewExperience(blankExperience);
+
+    setTimeout(() => {
+      lastExperienceRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, 0);
+  };
+
+  const handleEditExperience = (index, field, value) => {
+    const updatedExperiences = [...resumeData.workExperience];
+    updatedExperiences[index] = {
+      ...updatedExperiences[index],
+      [field]: value,
+    };
+    setWorkExperience(updatedExperiences);
   };
 
   const handleRemoveExperience = (index) => {
@@ -65,173 +79,150 @@ const WorkExperience = () => {
     setWorkExperience(updatedExperiences);
   };
 
-  const handleMoveUp = (index) => {
-    if (index > 0) {
+  const handleMoveExperience = (index, direction) => {
+    if (
+      (direction === "up" && index > 0) ||
+      (direction === "down" && index < resumeData.workExperience.length - 1)
+    ) {
       const updatedExperiences = [...resumeData.workExperience];
-      [updatedExperiences[index], updatedExperiences[index - 1]] = [
-        updatedExperiences[index - 1],
-        updatedExperiences[index],
-      ];
+      const temp = updatedExperiences[index];
+      updatedExperiences[index] = updatedExperiences[index + (direction === "up" ? -1 : 1)];
+      updatedExperiences[index + (direction === "up" ? -1 : 1)] = temp;
       setWorkExperience(updatedExperiences);
     }
   };
 
-  const handleMoveDown = (index) => {
-    if (index < resumeData.workExperience.length - 1) {
-      const updatedExperiences = [...resumeData.workExperience];
-      [updatedExperiences[index], updatedExperiences[index + 1]] = [
-        updatedExperiences[index + 1],
-        updatedExperiences[index],
-      ];
-      setWorkExperience(updatedExperiences);
-    }
+  const handleDuplicateExperience = (index) => {
+    const experienceToDuplicate = resumeData.workExperience[index];
+    const duplicatedExperience = {
+      ...experienceToDuplicate,
+      startDate: "",
+      endDate: "",
+      ongoing: false,
+    };
+    const updatedExperiences = [...resumeData.workExperience];
+    updatedExperiences.splice(index + 1, 0, duplicatedExperience);
+    setWorkExperience(updatedExperiences);
   };
 
   return (
-    <div>
-      <h2>Work Experience</h2>
-
-      <form onSubmit={(e) => e.preventDefault()}>
-        <label htmlFor="company">Company:</label>
-        <input
-          type="text"
-          id="company"
-          name="company"
-          value={newExperience.company}
-          onChange={handleInputChange}
-        />
-
-        <label htmlFor="location">Location:</label>
-        <input
-          type="text"
-          id="location"
-          name="location"
-          value={newExperience.location}
-          onChange={handleInputChange}
-        />
-
-        <label htmlFor="position">Position:</label>
-        <input
-          type="text"
-          id="position"
-          name="position"
-          value={newExperience.position}
-          onChange={handleInputChange}
-        />
-
-        <label htmlFor="description">Description:</label>
-        <textarea
-          id="description"
-          name="description"
-          value={newExperience.description}
-          onChange={handleInputChange}
-        ></textarea>
-
-        <label htmlFor="startDate">Start Date:</label>
-        <input
-          type="month"
-          id="startDate"
-          name="startDate"
-          value={newExperience.startDate}
-          onChange={handleInputChange}
-        />
-
-        <label htmlFor="endDate">End Date:</label>
-        <input
-          type="month"
-          id="endDate"
-          name="endDate"
-          value={newExperience.endDate}
-          onChange={handleInputChange}
-          disabled={newExperience.ongoing}
-        />
-
-        <label htmlFor="ongoing">Ongoing:</label>
-        <input
-          type="checkbox"
-          id="ongoing"
-          name="ongoing"
-          checked={newExperience.ongoing}
-          onChange={handleInputChange}
-        />
-
-        <button onClick={handleAddExperience}>Add Experience</button>
-      </form>
-
-      {resumeData.workExperience.map((experience, index) => (
-        <div key={index}>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <label htmlFor={`company-${index}`}>Company:</label>
-            <input
-              type="text"
-              id={`company-${index}`}
-              name="company"
-              value={experience.company}
-              onChange={(e) => handleInputChangeEdit(e, index)}
-            />
-
-            <label htmlFor={`location-${index}`}>Location:</label>
-            <input
-              type="text"
-              id={`location-${index}`}
-              name="location"
-              value={experience.location}
-              onChange={(e) => handleInputChangeEdit(e, index)}
-            />
-
-            <label htmlFor={`position-${index}`}>Position:</label>
-            <input
-              type="text"
-              id={`position-${index}`}
-              name="position"
-              value={experience.position}
-              onChange={(e) => handleInputChangeEdit(e, index)}
-            />
-
-            <label htmlFor={`description-${index}`}>Description:</label>
-            <textarea
-              id={`description-${index}`}
-              name="description"
-              value={experience.description}
-              onChange={(e) => handleInputChangeEdit(e, index)}
-            ></textarea>
-
-            <label htmlFor={`startDate-${index}`}>Start Date:</label>
-            <input
-              type="month"
-              id={`startDate-${index}`}
-              name="startDate"
-              value={experience.startDate}
-              onChange={(e) => handleInputChangeEdit(e, index)}
-            />
-
-            <label htmlFor={`endDate-${index}`}>End Date:</label>
-            <input
-              type="month"
-              id={`endDate-${index}`}
-              name="endDate"
-              value={experience.endDate}
-              onChange={(e) => handleInputChangeEdit(e, index)}
-              disabled={experience.ongoing}
-            />
-
-            <label htmlFor={`ongoing-${index}`}>Ongoing:</label>
-            <input
-              type="checkbox"
-              id={`ongoing-${index}`}
-              name="ongoing"
-              checked={experience.ongoing}
-              onChange={(e) => handleInputChangeEdit(e, index)}
-            />
-
-            <button onClick={() => handleRemoveExperience(index)}>
-              Remove
-            </button>
-            <button onClick={() => handleMoveUp(index)}>Move Up</button>
-            <button onClick={() => handleMoveDown(index)}>Move Down</button>
-          </form>
-        </div>
-      ))}
+    <div className="form-section">
+      <div className="section-header">
+        <h2>Work Experience</h2>
+        <button
+          className="add-button"
+          onClick={handleAddExperience}
+          title="Add new work experience"
+        >
+          <FontAwesomeIcon icon={faPlus} />
+        </button>
+      </div>
+      <div className="input-group">
+        {resumeData.workExperience.map((exp, index) => (
+          <div 
+            key={index} 
+            className="experience-item"
+            ref={index === resumeData.workExperience.length - 1 ? lastExperienceRef : null}
+          >
+            <div className="experience-header">
+              <h3>{exp.position || "New Experience"} {exp.company && `at ${exp.company}`}</h3>
+              <div className="experience-actions">
+                <button
+                  title="Move up"
+                  onClick={() => handleMoveExperience(index, "up")}
+                >
+                  <FontAwesomeIcon icon={faArrowUp} />
+                </button>
+                <button
+                  title="Move down"
+                  onClick={() => handleMoveExperience(index, "down")}
+                >
+                  <FontAwesomeIcon icon={faArrowDown} />
+                </button>
+                <button
+                  title="Duplicate this experience"
+                  onClick={() => handleDuplicateExperience(index)}
+                  className="duplicate-button"
+                >
+                  <FontAwesomeIcon icon={faCopy} />
+                </button>
+                <button
+                  title="Remove experience"
+                  onClick={() => handleRemoveExperience(index)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
+            </div>
+            <div className="input-group">
+              <div className="input-field">
+                <label>Company</label>
+                <input
+                  type="text"
+                  value={exp.company}
+                  onChange={(e) => handleEditExperience(index, "company", e.target.value)}
+                  placeholder="Company name"
+                />
+              </div>
+              <div className="input-field">
+                <label>Position</label>
+                <input
+                  type="text"
+                  value={exp.position}
+                  onChange={(e) => handleEditExperience(index, "position", e.target.value)}
+                  placeholder="Your position"
+                />
+              </div>
+              <div className="input-field">
+                <label>Location</label>
+                <input
+                  type="text"
+                  value={exp.location}
+                  onChange={(e) => handleEditExperience(index, "location", e.target.value)}
+                  placeholder="City, Country"
+                />
+              </div>
+              <div className="date-fields">
+                <div className="input-field">
+                  <label>Start Date</label>
+                  <input
+                    type="month"
+                    value={exp.startDate ? formatDateForInput(exp.startDate) : ""}
+                    onChange={(e) => handleEditExperience(index, "startDate", e.target.value)}
+                  />
+                </div>
+                <div className="input-field">
+                  <label>End Date</label>
+                  <input
+                    type="month"
+                    value={exp.endDate ? formatDateForInput(exp.endDate) : ""}
+                    onChange={(e) => handleEditExperience(index, "endDate", e.target.value)}
+                    disabled={exp.ongoing}
+                  />
+                </div>
+              </div>
+              <div className="input-field">
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={exp.ongoing}
+                    onChange={(e) => handleEditExperience(index, "ongoing", e.target.checked)}
+                  />
+                  Currently working here
+                </label>
+              </div>
+              <div className="input-field">
+                <label>Description</label>
+                <textarea
+                  value={exp.description}
+                  onChange={(e) => handleEditExperience(index, "description", e.target.value)}
+                  placeholder="Describe your role and achievements"
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
