@@ -1,42 +1,98 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import useResumeStore from '../stores/useResumeStore';
 
-const HardSkills = () => {
-  const [newSkill, setNewSkill] = useState('');
-  const { resumeData, setHardSkills } = useResumeStore();
+const SkillItem = ({ skill, index, moveSkill }) => {
+  const [{ isDragging }, drag] = useDrag({
+    type: 'SKILL',
+    item: { index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
 
-  const addSkill = () => {
-    if (newSkill.trim() !== '') {
-      setHardSkills([...resumeData.hardSkills, newSkill]);
-      setNewSkill('');
-    }
-  };
+  const [{ isOver, draggedItem }, drop] = useDrop({
+    accept: 'SKILL',
+    drop: (item) => {
+      if (item.index !== index) {
+        moveSkill(item.index, index);
+      }
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      draggedItem: monitor.getItem(),
+    }),
+  });
 
-  const removeSkill = (index) => {
-    const updatedSkills = [...resumeData.hardSkills];
-    updatedSkills.splice(index, 1);
-    setHardSkills(updatedSkills);
-  };
-
-  const handleSkillChange = (e) => {
-    setNewSkill(e.target.value);
+  const getDropTargetClass = () => {
+    if (!isOver || !draggedItem) return '';
+    return draggedItem.index < index ? 'drop-target' : 'drop-target insert-before';
   };
 
   return (
-    <div>
-      <h2>Hard Skills</h2>
-      <div>
-        <input type="text" value={newSkill} onChange={handleSkillChange} placeholder="Enter a skill" />
-        <button onClick={addSkill}>Add Skill</button>
+    <div
+      ref={(node) => drag(drop(node))}
+      className={`skill-item ${isDragging ? 'dragging' : ''} ${getDropTargetClass()}`}
+    >
+      {skill}
+    </div>
+  );
+};
+
+const SkillsCloud = ({ skills, moveSkill }) => {
+  return (
+    <div className="skills-cloud">
+      {skills.map((skill, index) => (
+        <SkillItem
+          key={index}
+          skill={skill}
+          index={index}
+          moveSkill={moveSkill}
+        />
+      ))}
+    </div>
+  );
+};
+
+const HardSkills = () => {
+  const { resumeData, setHardSkills } = useResumeStore();
+
+  const handleSkillsChange = (e) => {
+    const skills = e.target.value.split(',').map(skill => skill.trim()).filter(skill => skill);
+    setHardSkills(skills);
+  };
+
+  const getSkillsText = () => {
+    return resumeData.hardSkills.join(', ');
+  };
+
+  const moveSkill = (fromIndex, toIndex) => {
+    const skills = [...resumeData.hardSkills];
+    const [movedSkill] = skills.splice(fromIndex, 1);
+    skills.splice(toIndex, 0, movedSkill);
+    setHardSkills(skills);
+  };
+
+  return (
+    <div className="form-section">
+      <div className="section-header">
+        <h2>Hard Skills</h2>
       </div>
-      <ul>
-        {resumeData.hardSkills.map((skill, index) => (
-          <li key={index}>
-            {skill}
-            <button onClick={() => removeSkill(index)}>Remove</button>
-          </li>
-        ))}
-      </ul>
+      <div className="input-group">
+        <div className="input-field">
+          <label>Skills (separated by commas)</label>
+          <textarea
+            value={getSkillsText()}
+            onChange={handleSkillsChange}
+            placeholder="JavaScript, React, Node.js, etc."
+            rows={3}
+          />
+        </div>
+      </div>
+      <DndProvider backend={HTML5Backend}>
+        <SkillsCloud skills={resumeData.hardSkills} moveSkill={moveSkill} />
+      </DndProvider>
     </div>
   );
 };
